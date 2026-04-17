@@ -1,0 +1,30 @@
+package com.stu.helloserver.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+/**
+ * 用户实体类，对应数据库sys_user表
+ */
+@Data
+@TableName("sys_user") // 对应数据库表名
+public class User {
+
+    /**
+     * 主键ID，AUTO使用数据库自增策略
+     */
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 密码
+     */
+    private String password;
+}
