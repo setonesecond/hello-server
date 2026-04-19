@@ -13,16 +13,8 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
     /**
      * 多表联查用户详情（sys_user + user_info）
      */
-    @Select("""
-        SELECT
-            u.id AS userId,
-            u.username,
-            i.real_name AS realName,
-            i.phone,
-            i.address
-        FROM sys_user u
-        LEFT JOIN user_info i ON u.id = i.user_id
-        WHERE u.id = #{userId}
-    """)
+    @Select("SELECT u.id AS userId, u.username, i.real_name AS realName, i.phone, i.address "
+            + "FROM sys_user u LEFT JOIN user_info i ON u.id = i.user_id "
+            + "WHERE u.id = #{userId}")
     UserDetailVO getUserDetail(@Param("userId") Long userId);
 }

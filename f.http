@@ -1,5 +1,120 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### ==================== 实验九：JWT 认证测试 ====================
+
+### 1. 用户注册
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123456"
+}
+
+###
+
+### 2. 用户登录（成功后返回JWT Token）
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "123456"
+}
+
+###
+
+### 3. 使用JWT访问受保护接口 - 查询单个用户
+# 将下面的 {{token}} 替换为第2步登录返回的JWT Token
+GET http://localhost:8080/api/users/1
+Authorization: Bearer {{token}}
+
+###
+
+### 4. 分页查询用户列表
+GET http://localhost:8080/api/users/list/paged?pageNum=1&pageSize=5
+Authorization: Bearer {{token}}
+
+###
+
+### 5. 查询用户详情
+GET http://localhost:8080/api/users/1/detail
+Authorization: Bearer {{token}}
+
+###
+
+### 6. 不带Token访问受保护接口（应返回401/403）
+GET http://localhost:8080/api/users/1
+
+###
+
+### 7. 使用错误Token访问（应返回401/403）
+GET http://localhost:8080/api/users/1
+Authorization: Bearer invalidToken123
+
+###
+
+### ==================== 实验十：Qwen AI 对话测试 ====================
+
+### 8. AI对话 - 自我介绍
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "你好，请介绍一下你自己"
+}
+
+###
+
+### 9. AI对话 - 问问题
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "用Java写一个冒泡排序"
+}
+
+###
+
+### 10. AI对话 - 翻译
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "message": "把'Hello World, this is a test'翻译成中文"
+}
+
+###
+
+### ==================== 实验十一：Chat Memory 多轮对话测试 ====================
+
+### 11. 多轮对话 - 第一轮（不带sessionId默认用"default"会话）
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "sessionId": "test001",
+  "message": "我叫张三，我是一名Java程序员"
+}
+
+###
+
+### 12. 多轮对话 - 第二轮（同一个sessionId，测试记忆）
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "sessionId": "test001",
+  "message": "我叫什么名字？我的职业是什么？"
+}
+
+###
+
+### 13. 多轮对话 - 第三轮（继续追问）
+POST http://localhost:8080/api/chat
+Content-Type: application/json
+
+{
+  "sessionId": "test001",
+  "message": "请给我推荐几本适合我的书"
+}
 
 ###
